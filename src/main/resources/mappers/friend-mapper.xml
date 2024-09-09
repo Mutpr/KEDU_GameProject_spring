@@ -1,0 +1,17 @@
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="Friend">
+    <resultMap id="friend_clob" type="java.util.HashMap">
+        <result property="friend_list" column="friend_list" javaType="java.lang.String"/>
+    </resultMap>
+    <select id="selectFriendListClob" resultMap="friend_clob">
+        select friend_list from friend where friend_owner_seq = #{friend_owner_seq}
+    </select>
+    <insert id="insertFriendList" >
+        insert into friend values(friend_seq.nextval, #{friend_owner_seq}, '[]')
+    </insert>
+    <select id="findUserAsKeyword" resultType="com.kedu.game.DTO.UserDTO">
+        select user_seq, user_tag_id, user_name from users where user_tag_id like '%' || #{user_tag_id} || '%'
+    </select>
+</mapper>
