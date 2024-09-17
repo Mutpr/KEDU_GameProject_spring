@@ -5,6 +5,9 @@
     <select id="userLogin" resultType="com.kedu.game.DTO.UserDTO">
         select user_name, user_seq, user_id from users where user_id=#{user_id} and user_password=#{user_password}
     </select>
+    <select id="findUserAsUserSeq" resultType="com.kedu.game.DTO.UserDTO">
+        select user_seq, user_id, user_name, user_tag_id from users where user_seq = #{user_seq}
+    </select>
     <insert id="userRegister" parameterType="com.kedu.game.DTO.UserDTO">
         insert into users values (user_seq.nextval, #{user_id}, #{user_password}, #{user_name}, #{user_tag_id}, 1)
     </insert>

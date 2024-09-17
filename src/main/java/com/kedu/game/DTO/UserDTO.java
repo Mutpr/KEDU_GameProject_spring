@@ -37,6 +37,13 @@ public class UserDTO {
         this.user_tag_id = user_tag_id;
     }
 
+    //친추 확인용 생성자
+    public UserDTO(String user_id, String user_name, String user_tag_id){
+        this.user_tag_id = user_tag_id;
+        this.user_id = user_id;
+        this.user_name = user_name;
+    }
+
     public int getUser_seq() {
         return user_seq;
     }

@@ -24,6 +24,7 @@ public class SecurityConfig {
             CorsConfiguration config = new CorsConfiguration();
             config.setAllowedOrigins(Arrays.asList("http://192.168.0.100:3000"));
             config.setAllowedOrigins(Arrays.asList("http://192.168.1.238:3000"));
+            config.setAllowedOrigins(Arrays.asList("http://172.30.1.87:3000"));
             config.setAllowedHeaders(Arrays.asList("*"));
             config.setAllowedMethods(Arrays.asList("*"));
             return config;
@@ -37,6 +38,11 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.GET,"/friend").permitAll()
                         .requestMatchers(HttpMethod.POST,"/friend").permitAll()
                         .requestMatchers(HttpMethod.GET,"/friend/userSearch").permitAll()
+                        .requestMatchers(HttpMethod.POST,"/friend/addFriend").permitAll()
+                        .requestMatchers(HttpMethod.GET,"/friend/findRequest").permitAll()
+                        .requestMatchers(HttpMethod.GET,"/friend/findReceivedRequest").permitAll()
+                        .requestMatchers(HttpMethod.POST,"/friend/requestAgree").permitAll()
+                        .requestMatchers(HttpMethod.POST,"/friend/requestDisagree").permitAll()
                         .anyRequest().authenticated()
                 );
 

@@ -17,4 +17,7 @@ public class UserService {
     public int UserRegister(UserDTO userDTO) {
         return userDAO.userRegister(userDTO);
     }
+    public UserDTO findUserAsUserSeq(int user_seq){
+        return userDAO.findUserAsUserSeq(user_seq);
+    }
 }

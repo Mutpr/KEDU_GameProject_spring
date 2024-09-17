@@ -10,16 +10,19 @@ import javax.print.attribute.standard.MediaSize;
 
 @Repository
 public class UserDAO {
-    private static final String NAMESPACE = "User";
+    private static final String NAMESPACE = "User.";
 
     @Autowired
     SqlSession session;
 
     public UserDTO userLogin(UserDTO userDTO) {
-        return session.selectOne(NAMESPACE + ".userLogin", userDTO);
+        return session.selectOne(NAMESPACE + "userLogin", userDTO);
     }
 
     public int userRegister(UserDTO userDTO) {
-        return session.insert(NAMESPACE + ".userRegister", userDTO);
+        return session.insert(NAMESPACE + "userRegister", userDTO);
+    }
+    public UserDTO findUserAsUserSeq(int user_seq){
+        return session.selectOne(NAMESPACE+"findUserAsUserSeq", user_seq);
     }
 }

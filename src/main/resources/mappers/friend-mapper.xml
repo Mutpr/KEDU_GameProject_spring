@@ -12,6 +12,27 @@
         insert into friend values(friend_seq.nextval, #{friend_owner_seq}, '[]')
     </insert>
     <select id="findUserAsKeyword" resultType="com.kedu.game.DTO.UserDTO">
-        select user_seq, user_tag_id, user_name from users where user_tag_id like '%' || #{user_tag_id} || '%'
+        select user_seq, user_tag_id, user_name from users where user_tag_id like '%' || #{user_tag_id} || '%' and user_seq != #{user_seq}
     </select>
+    <insert id="addFriendRequest" >
+        insert into friend_request values (friend_request_seq.nextval, #{friend_request_owner_seq}, #{friend_request_sender_seq}, 0)
+    </insert>
+    <select id="findFriendRequest" resultType="com.kedu.game.DTO.FriendRequestDTO">
+        select FRIEND_REQUEST_SENDER_SEQ from FRIEND_REQUEST where FRIEND_REQUEST_OWNER_SEQ = #{user_seq} and friend_request_status = 0
+    </select>
+    <select id="findReceivedFriendRequest" resultType="com.kedu.game.DTO.FriendRequestDTO">
+        select friend_request_owner_seq from friend_request where friend_request_sender_seq = #{user_seq} and friend_request_status = 0
+    </select>
+    <select id="findRequestSeqByUser" parameterType="java.util.HashMap" resultType="java.lang.Integer">
+        select friend_request_seq from friend_request where friend_request_sender_seq = #{user_seq} and friend_request_owner_seq = #{owner_seq}
+    </select>
+    <update id="requestAgree">
+        update friend_request set friend_request_status = '1' where friend_request_seq = #{seq}
+    </update>
+    <update id="requestDisagree" parameterType="java.util.HashMap">
+        update friend_request set friend_request_status = '2' where friend_request_seq = #{seq}
+    </update>
+    <update id="friendListUpdate">
+        update friend set friend_list = #{friend_list} where friend_request_seq = #{seq}
+    </update>
 </mapper>

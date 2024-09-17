@@ -1,6 +1,7 @@
 package com.kedu.game.DAO;
 
 import com.kedu.game.DTO.FriendDTO;
+import com.kedu.game.DTO.FriendRequestDTO;
 import com.kedu.game.DTO.UserDTO;
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,7 +27,39 @@ public class FriendDAO {
         return session.insert(NAMESPACE+"insertFriendList", friend_owner_seq);
     }
 
-    public List<UserDTO> findUserAsKeyword(String user_tag_id){
-        return session.selectList(NAMESPACE+"findUserAsKeyword", user_tag_id);
+    public List<UserDTO> findUserAsKeyword(Map<String, Object> params){
+        return session.selectList(NAMESPACE+"findUserAsKeyword", params);
+    }
+
+    public int addFriendRequest(Map<String, String> params){
+        int friend_request_owner_seq = Integer.parseInt(params.get("friend_request_owner_seq"));
+        int friend_request_sender_seq = Integer.parseInt(params.get("friend_request_sender_seq"));
+        FriendRequestDTO dto = new FriendRequestDTO(friend_request_owner_seq, friend_request_sender_seq);
+        return session.insert(NAMESPACE+"addFriendRequest", dto);
+    }
+
+    public List<FriendRequestDTO> findFriendRequest(int user_seq){
+        return session.selectList(NAMESPACE+"findFriendRequest", user_seq);
+    }
+
+    public List<FriendRequestDTO> findReceivedFriendRequest(int user_seq){
+        return session.selectList(NAMESPACE+"findReceivedFriendRequest", user_seq);
+    }
+
+    public int requestAgree(int request_seq){
+        return session.update(NAMESPACE+"requestAgree", request_seq);
+    }
+
+    public int requestDisagree(int request_seq){
+        return session.update(NAMESPACE+"requestDisagree", request_seq);
+    }
+
+    public int findRequestSeqByUser(Map<String, Integer> params){
+        return session.selectOne(NAMESPACE+"findRequestSeqByUser", params);
+    }
+
+    //agree랑 동시 발생
+    public int friendListUpdate(String friend_list){
+        return session.update(NAMESPACE+"friendListUpdate", friend_list);
     }
 }
