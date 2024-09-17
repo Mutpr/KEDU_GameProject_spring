@@ -2,6 +2,9 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="User">
+    <resultMap id="friend_clob" type="java.lang.String">
+        <result property="friend_list" column="friend_list" javaType="java.lang.String"/>
+    </resultMap>
     <select id="userLogin" resultType="com.kedu.game.DTO.UserDTO">
         select user_name, user_seq, user_id from users where user_id=#{user_id} and user_password=#{user_password}
     </select>
@@ -11,4 +14,10 @@
     <insert id="userRegister" parameterType="com.kedu.game.DTO.UserDTO">
         insert into users values (user_seq.nextval, #{user_id}, #{user_password}, #{user_name}, #{user_tag_id}, 1)
     </insert>
+    <update id="friendListUpdate">
+        update friend set friend_list = #{friend_list} where friend_seq =(select friend_list_seq from users where user_seq = #{user_seq})
+    </update>
+    <select id="getFriendList" resultMap="friend_clob" >
+        select friend_list from friend where friend_seq = (select friend_seq from users where user_seq = #{user_seq})
+    </select>
 </mapper>

@@ -105,20 +105,34 @@ public class FriendController {
 
     //친추 요청 저장하는 메소드
     @PostMapping("/addFriend")
-    public ResponseEntity<Boolean> addFriend(@RequestBody Map<String, Object> params) throws JsonProcessingException {
+    public ResponseEntity<String> addFriend(@RequestBody Map<String, Object> params) throws JsonProcessingException {
+
         Object param = params.get("params");
         System.out.println("add friend param:::: "+param);
         String paramToString = param.toString().trim();
         Gson gson = new Gson();
         Type type = new TypeToken<Map<String, String>>() {}.getType();
         Map<String, String> map = gson.fromJson(paramToString, type);
-        System.out.println(map);
-        int result = friendService.addFriendRequest(map);
-        if(result <= 0){
-            return ResponseEntity.ok(false);
+        System.out.println("map:::: "+map);
+
+        int friend_request_owner_seq = Integer.parseInt(map.get("friend_request_owner_seq"));
+        int friend_request_sender_seq = Integer.parseInt(map.get("friend_request_sender_seq"));
+
+        FriendRequestDTO friendRequestDTO = new FriendRequestDTO(friend_request_owner_seq, friend_request_sender_seq);
+        int findResult = friendService.friendRequestTest(friendRequestDTO);
+        System.out.println("findResult:::: "+findResult);
+        if(findResult > 0) {
+//            System.out.println("이미 친구 신청을 보낸 유저입니다.");
+            return ResponseEntity.ok("이미 친구 요청을 보낸 유저입니다.");
         }else{
-            return ResponseEntity.ok(true);
+            int result = friendService.addFriendRequest(map);
+            if(result <= 0){
+                return ResponseEntity.ok("친구 요청을 전송하는데 실패했습니다.");
+            }else{
+                return ResponseEntity.ok("친구 요청을 전송하는데 성공했습니다.");
+            }
         }
+
 //        return ResponseEntity.ok().build();
     }
 
@@ -153,8 +167,29 @@ public class FriendController {
     }
 
     @PostMapping("/requestAgree")
-    public ResponseEntity<Boolean> requestAgree(@RequestBody Map<String, Object> user_seq){
-        System.out.println(user_seq.toString());
+    public ResponseEntity<Boolean> requestAgree(@RequestBody Map<String, Object> params){
+//        System.out.println("user_seq:::: "+params.toString());
+        Object param = params.get("params");
+        System.out.println("add friend param:::: "+param);
+        String paramToString = param.toString().trim();
+        Gson gson = new Gson();
+        Type type = new TypeToken<Map<String, String>>() {}.getType();
+        Map<String, String> map = gson.fromJson(paramToString, type);
+        System.out.println("map:::: "+map);
+        String friendList = userService.getFriendList(Integer.parseInt(map.get("user_seq")));
+        Map<String, Object> parameter = new HashMap<>();
+        System.out.println("friendList::: "+friendList);
+        if(friendList.equals("[]")){
+            parameter.put("friend_list", "["+map.get("owner_seq")+"]");
+            parameter.put("user_seq", map.get("user_seq"));
+          int updateFriendList = userService.friendListUpdate(parameter);
+//            System.out.println("["+map.get("owner_seq")+"]");
+            System.out.println(updateFriendList);
+        }else{
+            String str = getUpdatedUserList("[1,2]", Integer.parseInt(map.get("owner_seq")));
+            System.out.println("str:::: "+str);
+        }
+//        System.out.println(splitResult);
         //friendList update 해야하고
 //        int result = friendService.requestAgree();
         //friendRequest 상태 업데이트
@@ -176,5 +211,22 @@ public class FriendController {
 //        Map<String, Integer>
         return ResponseEntity.ok().build();
 
+    }
+//userList 가공하는 메소드
+    public String getUpdatedUserList(String originalFriendList, int addedUserSeq){
+        //[1,2,3] 형태인지 필히 확인할것!!!!
+        String str = originalFriendList.substring(1,originalFriendList.length()-1);
+        System.out.println("str::: "+str);
+        String updatedStr = str+","+addedUserSeq;
+        System.out.println(updatedStr);
+        return "["+updatedStr+"]";
+//        String [] splitList = str.split(",");
+//        //        split
+//        List<String> list = new ArrayList<>(Arrays.asList(splitList));
+//        list.add(addedUserSeq+"");
+//        for(String split: list){
+//            System.out.println(split);
+//        }
+//        return "";
     }
 }

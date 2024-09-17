@@ -24,7 +24,7 @@
         select friend_request_owner_seq from friend_request where friend_request_sender_seq = #{user_seq} and friend_request_status = 0
     </select>
     <select id="findRequestSeqByUser" parameterType="java.util.HashMap" resultType="java.lang.Integer">
-        select friend_request_seq from friend_request where friend_request_sender_seq = #{user_seq} and friend_request_owner_seq = #{owner_seq}
+        select friend_request_seq from friend_request where friend_request_sender_seq = #{user_seq} and friend_request_owner_seq = #{owner_seq} and friend_request_status = 0
     </select>
     <update id="requestAgree">
         update friend_request set friend_request_status = '1' where friend_request_seq = #{seq}
@@ -32,7 +32,9 @@
     <update id="requestDisagree" parameterType="java.util.HashMap">
         update friend_request set friend_request_status = '2' where friend_request_seq = #{seq}
     </update>
-    <update id="friendListUpdate">
-        update friend set friend_list = #{friend_list} where friend_request_seq = #{seq}
-    </update>
+
+    <select id="friendRequestTest" resultType="int">
+        select count(*) from friend_request where friend_request_owner_seq = #{friend_request_owner_seq} and friend_request_sender_seq =  #{friend_request_sender_seq}
+            and friend_request_status = 0
+    </select>
 </mapper>

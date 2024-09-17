@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import javax.print.attribute.standard.MediaSize;
+import java.util.Map;
 
 @Repository
 public class UserDAO {
@@ -24,5 +25,12 @@ public class UserDAO {
     }
     public UserDTO findUserAsUserSeq(int user_seq){
         return session.selectOne(NAMESPACE+"findUserAsUserSeq", user_seq);
+    }
+    public int friendListUpdate(Map<String, Object> friendList){
+        return session.update(NAMESPACE+"friendListUpdate", friendList);
+    }
+
+    public String getFriendList(int user_seq){
+        return session.selectOne(NAMESPACE+"getFriendList", user_seq);
     }
 }

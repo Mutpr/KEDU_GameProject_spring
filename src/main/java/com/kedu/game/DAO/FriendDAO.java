@@ -57,9 +57,14 @@ public class FriendDAO {
     public int findRequestSeqByUser(Map<String, Integer> params){
         return session.selectOne(NAMESPACE+"findRequestSeqByUser", params);
     }
+//
+//    //agree랑 동시 발생
+//    public int friendListUpdate(Map){
+//        return session.update(NAMESPACE+"friendListUpdate", friend_list);
+//    }
 
-    //agree랑 동시 발생
-    public int friendListUpdate(String friend_list){
-        return session.update(NAMESPACE+"friendListUpdate", friend_list);
+    //같은 유저에게서 같은 유저에게 발송된 친추요청 있는지 확인
+    public int friendRequestTest(FriendRequestDTO friendRequestDTO){
+        return session.selectOne(NAMESPACE+"friendRequestTest", friendRequestDTO);
     }
 }
