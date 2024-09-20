@@ -67,4 +67,13 @@ public class FriendDAO {
     public int friendRequestTest(FriendRequestDTO friendRequestDTO){
         return session.selectOne(NAMESPACE+"friendRequestTest", friendRequestDTO);
     }
+
+    //seq로 친구 리스트 확인
+    public String selectFriendListBySeq(int friend_seq){
+        return session.selectOne(NAMESPACE+"selectFriendListBySeq", friend_seq);
+    }
+
+    public int updateFriendList(FriendDTO friendDTO){
+        return session.update(NAMESPACE+"updateFriendList", friendDTO);
+    }
 }

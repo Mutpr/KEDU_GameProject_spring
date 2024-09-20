@@ -2,7 +2,7 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="Friend">
-    <resultMap id="friend_clob" type="java.util.HashMap">
+    <resultMap id="friend_clob" type="java.lang.String">
         <result property="friend_list" column="friend_list" javaType="java.lang.String"/>
     </resultMap>
     <select id="selectFriendListClob" resultMap="friend_clob">
@@ -32,9 +32,14 @@
     <update id="requestDisagree" parameterType="java.util.HashMap">
         update friend_request set friend_request_status = '2' where friend_request_seq = #{seq}
     </update>
-
     <select id="friendRequestTest" resultType="int">
         select count(*) from friend_request where friend_request_owner_seq = #{friend_request_owner_seq} and friend_request_sender_seq =  #{friend_request_sender_seq}
             and friend_request_status = 0
     </select>
+    <select id="selectFriendListBySeq" resultMap="friend_clob">
+        select friend_list from friend where friend_seq=#{friend_seq}
+    </select>
+    <update id="updateFriendList">
+        update friend set friend_list=#{friend_list} where friend_seq=#{friend_seq}
+    </update>
 </mapper>

@@ -24,7 +24,6 @@ public class SecurityConfig {
             CorsConfiguration config = new CorsConfiguration();
             config.setAllowedOrigins(Arrays.asList("http://192.168.0.100:3000"));
             config.setAllowedOrigins(Arrays.asList("http://192.168.1.238:3000"));
-            config.setAllowedOrigins(Arrays.asList("http://172.30.1.87:3000"));
             config.setAllowedHeaders(Arrays.asList("*"));
             config.setAllowedMethods(Arrays.asList("*"));
             return config;
@@ -35,14 +34,17 @@ public class SecurityConfig {
                         .requestMatchers("/socket/chat").permitAll() // WebSocket 경로에 대한 접근 제한
                         .requestMatchers(HttpMethod.POST, "/user/login").permitAll()
                         .requestMatchers(HttpMethod.POST, "/user/register").permitAll()
+
                         .requestMatchers(HttpMethod.GET,"/friend").permitAll()
-//                        .requestMatchers(HttpMethod.POST,"/friend/{seq}").permitAll()
+                        .requestMatchers(HttpMethod.POST,"/friend").permitAll()
+                        .requestMatchers(HttpMethod.GET,"/friend/{seq}").permitAll()
                         .requestMatchers(HttpMethod.GET,"/friend/userSearch").permitAll()
                         .requestMatchers(HttpMethod.POST,"/friend/addFriend").permitAll()
                         .requestMatchers(HttpMethod.GET,"/friend/findRequest").permitAll()
                         .requestMatchers(HttpMethod.GET,"/friend/findReceivedRequest").permitAll()
                         .requestMatchers(HttpMethod.POST,"/friend/requestAgree").permitAll()
                         .requestMatchers(HttpMethod.POST,"/friend/requestDisagree").permitAll()
+                        .requestMatchers(HttpMethod.POST,"/friend/delete/{deletedUserSeq}/{parsedSeq}").permitAll()
                         .anyRequest().authenticated()
                 );
 

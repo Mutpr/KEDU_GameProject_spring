@@ -15,6 +15,10 @@ public class FriendDTO {
         this.friend_list = friend_list;
     }
 
+    public FriendDTO(String friend_list, int friend_seq){
+        this.friend_list=friend_list;
+        this.friend_seq=friend_seq;
+    }
 
     //friend_seq는 자동으로 추가되고 friend_list는 처음에 []만 삽입
     public FriendDTO(int friend_owner_seq){

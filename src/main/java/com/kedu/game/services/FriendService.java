@@ -49,5 +49,12 @@ public class FriendService {
     public int findRequestSeqByUser(Map<String, Integer> params){
         return friendDAO.findRequestSeqByUser(params);
     }
-    public int friendRequestTest(FriendRequestDTO friendRequestDTO){return friendDAO.friendRequestTest(friendRequestDTO);};
+    public int friendRequestTest(FriendRequestDTO friendRequestDTO){return friendDAO.friendRequestTest(friendRequestDTO);}
+    public String selectFriendListBySeq(int friend_seq){
+        return friendDAO.selectFriendListBySeq(friend_seq);
+    }
+
+    public int updateFriendList(FriendDTO friendDTO){
+        return friendDAO.updateFriendList(friendDTO);
+    }
 }

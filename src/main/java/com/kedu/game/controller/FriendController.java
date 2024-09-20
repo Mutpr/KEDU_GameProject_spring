@@ -39,11 +39,27 @@ public class FriendController {
 //        System.out.println(friendList.get("friend_list"));
         int friend_list_seq = userService.selectFriendListSeq(seq);
         System.out.println("friend_list_seq::::::  "+friend_list_seq);
+        String friend_list = friendService.selectFriendListBySeq(friend_list_seq);
+//        getUserList(friend_list);
+//        System.out.println("friendList:::: "+friend_list);
+
         List<UserDTO> userList = new ArrayList<>();
+        if(Arrays.toString(getUserList(friend_list)).equals("[]")){
+            return ResponseEntity.ok(userList);
+        }else{
+            for(String friend: getUserList(friend_list)){
+                int friend_seq = Integer.parseInt(friend);
+                System.out.println("friend_seq:::::: "+friend_seq);
+                UserDTO user = userService.getUserBySeq(friend_seq);
+                System.out.println(user.getUser_name());
+                userList.add(user);
+            }return ResponseEntity.ok(userList);
+        }
+
 //        UserDTO user = userService.getUserBySeq()
         //일단 friendListSeq 에서 friendSeq 몇번인지 가져와야함
 
-        return ResponseEntity.ok(userList);
+
     }
 
     @PostMapping
@@ -214,7 +230,15 @@ public class FriendController {
         return ResponseEntity.ok().build();
 
     }
-//userList 가공하는 메소드
+
+
+    //userList가져오는 메소드
+    public String[] getUserList(String originFriendList){
+        String str = originFriendList.substring(1, originFriendList.length()-1);
+        System.out.println("str:::: "+ str);
+        return str.split(",");
+    }
+//userList 업데이트하는 메소드(업데이트할 것이 있으면)
     public String getUpdatedUserList(String originalFriendList, int addedUserSeq){
         //[1,2,3] 형태인지 필히 확인할것!!!!
         String str = originalFriendList.substring(1,originalFriendList.length()-1);
@@ -230,5 +254,24 @@ public class FriendController {
 //            System.out.println(split);
 //        }
 //        return "";
+    }
+
+    @PostMapping("/delete/{deletedUserSeq}/{parsedSeq}")
+    public ResponseEntity<Integer> deleteUser(@PathVariable int deletedUserSeq, @PathVariable int parsedSeq){
+        int friend_seq = userService.selectFriendListSeq(parsedSeq);
+        System.out.println("friend_list_seq::::::  "+friend_seq);
+
+        String friend_list1 = friendService.selectFriendListBySeq(friend_seq);
+        System.out.println(friend_list1);
+
+        String str = friend_list1.substring(1, friend_list1.length()-1);
+        String [] strArray = str.split(",");
+        //삭제 선택한 유저 제외한 배열로 업데이트
+        String [] userList = Arrays.stream(strArray).filter(item->!item.equals(deletedUserSeq+"")).toArray(String[]::new);
+        String friend_list = Arrays.toString(userList);
+        System.out.println("friend_list:::"+friend_list);
+        int deleteUserList = friendService.updateFriendList(new FriendDTO(friend_list, friend_seq));
+        System.out.println("deleteUserList:::: "+deleteUserList);
+        return ResponseEntity.ok().build();
     }
 }
