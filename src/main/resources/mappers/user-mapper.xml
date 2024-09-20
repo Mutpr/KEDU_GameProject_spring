@@ -20,4 +20,10 @@
     <select id="getFriendList" resultMap="friend_clob" >
         select friend_list from friend where friend_seq = (select friend_seq from users where user_seq = #{user_seq})
     </select>
+    <select id="getUserBySeq">
+        select user_id, user_tag_id, user_name from users where user_seq = #{user_seq}
+    </select>
+    <select id="selectFriendListSeq">
+        select friend_list_seq from users where user_seq = #{user_seq}
+    </select>
 </mapper>

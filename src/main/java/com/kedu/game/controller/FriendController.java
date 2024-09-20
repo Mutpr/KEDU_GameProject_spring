@@ -32,16 +32,18 @@ public class FriendController {
     @Autowired
     UserService userService;
 
-    @GetMapping
-    public ResponseEntity<Boolean> getFriendList(@RequestParam Map<String, Integer> user_seq){
-        int userSeq = Integer.parseInt(String.valueOf(user_seq.get("user_seq")));
-        Map<String, Object> friendList = friendService.selectFriendList(userSeq);
-        System.out.println(friendList.get("friend_list"));
-        if(friendList.get("friend_list").toString().equals("[]")){
-            return ResponseEntity.ok(false);
-        }else{
-            return ResponseEntity.ok(true);
-        }
+    @GetMapping("/{seq}")
+    public ResponseEntity<List<UserDTO>> getFriendList(@PathVariable int seq){
+//        int userSeq = Integer.parseInt(String.valueOf(user_seq.get("user_seq")));
+//        Map<String, Object> friendList = friendService.selectFriendList(userSeq);
+//        System.out.println(friendList.get("friend_list"));
+        int friend_list_seq = userService.selectFriendListSeq(seq);
+        System.out.println("friend_list_seq::::::  "+friend_list_seq);
+        List<UserDTO> userList = new ArrayList<>();
+//        UserDTO user = userService.getUserBySeq()
+        //일단 friendListSeq 에서 friendSeq 몇번인지 가져와야함
+
+        return ResponseEntity.ok(userList);
     }
 
     @PostMapping

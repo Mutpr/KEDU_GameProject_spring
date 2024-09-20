@@ -33,4 +33,11 @@ public class UserDAO {
     public String getFriendList(int user_seq){
         return session.selectOne(NAMESPACE+"getFriendList", user_seq);
     }
+
+    public UserDTO getUserBySeq(int user_seq){
+        return session.selectOne(NAMESPACE+"getUserBySeq", user_seq);
+    }
+    public int selectFriendListSeq(int user_seq){
+        return session.selectOne(NAMESPACE+"selectFriendListSeq", user_seq);
+    }
 }

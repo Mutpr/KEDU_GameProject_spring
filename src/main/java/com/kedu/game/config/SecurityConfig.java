@@ -36,7 +36,7 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.POST, "/user/login").permitAll()
                         .requestMatchers(HttpMethod.POST, "/user/register").permitAll()
                         .requestMatchers(HttpMethod.GET,"/friend").permitAll()
-                        .requestMatchers(HttpMethod.POST,"/friend").permitAll()
+//                        .requestMatchers(HttpMethod.POST,"/friend/{seq}").permitAll()
                         .requestMatchers(HttpMethod.GET,"/friend/userSearch").permitAll()
                         .requestMatchers(HttpMethod.POST,"/friend/addFriend").permitAll()
                         .requestMatchers(HttpMethod.GET,"/friend/findRequest").permitAll()
