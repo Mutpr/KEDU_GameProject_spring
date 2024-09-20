@@ -44,17 +44,16 @@ public class FriendController {
 //        System.out.println("friendList:::: "+friend_list);
 
         List<UserDTO> userList = new ArrayList<>();
-        if(Arrays.toString(getUserList(friend_list)).equals("[]")){
-            return ResponseEntity.ok(userList);
-        }else{
-            for(String friend: getUserList(friend_list)){
+        if (!Arrays.toString(getUserList(friend_list)).equals("[]")) {
+            for (String friend : getUserList(friend_list)) {
                 int friend_seq = Integer.parseInt(friend);
-                System.out.println("friend_seq:::::: "+friend_seq);
+                System.out.println("friend_seq:::::: " + friend_seq);
                 UserDTO user = userService.getUserBySeq(friend_seq);
                 System.out.println(user.getUser_name());
                 userList.add(user);
-            }return ResponseEntity.ok(userList);
+            }
         }
+        return ResponseEntity.ok(userList);
 
 //        UserDTO user = userService.getUserBySeq()
         //일단 friendListSeq 에서 friendSeq 몇번인지 가져와야함
