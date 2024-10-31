@@ -41,15 +41,16 @@ public class FriendController {
         System.out.println("friend_list_seq::::::  "+friend_list_seq);
         String friend_list = friendService.selectFriendListBySeq(friend_list_seq);
 //        getUserList(friend_list);
-//        System.out.println("friendList:::: "+friend_list);
-
+        System.out.println("friendList:::: "+friend_list);
+        System.out.println("array:::: "+Arrays.toString(getUserList(friend_list)));
         List<UserDTO> userList = new ArrayList<>();
         if (!Arrays.toString(getUserList(friend_list)).equals("[]")) {
             for (String friend : getUserList(friend_list)) {
                 int friend_seq = Integer.parseInt(friend);
                 System.out.println("friend_seq:::::: " + friend_seq);
                 UserDTO user = userService.getUserBySeq(friend_seq);
-                System.out.println(user.getUser_name());
+//                System.out.println("user::: "+user);
+                System.out.println("user:::: "+user.getUser_name());
                 userList.add(user);
             }
         }
@@ -203,9 +204,13 @@ public class FriendController {
 //            System.out.println("["+map.get("owner_seq")+"]");
             System.out.println(updateFriendList);
         }else{
-            String str = getUpdatedUserList("[1,2]", Integer.parseInt(map.get("owner_seq")));
-            System.out.println("str:::: "+str);
+            String str = getUpdatedUserList(friendList, Integer.parseInt(map.get("owner_seq")));
+            System.out.println("str:::"+str);
         }
+//        else{
+//            String str = getUpdatedUserList("[1,2]", Integer.parseInt(map.get("owner_seq")));
+//            System.out.println("str:::: "+str);
+//        }
 //        System.out.println(splitResult);
         //friendList update 해야하고
 //        int result = friendService.requestAgree();
